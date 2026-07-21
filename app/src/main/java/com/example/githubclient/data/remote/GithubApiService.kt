@@ -1,5 +1,6 @@
 package com.example.githubclient.data.remote
 
+import com.example.githubclient.BuildConfig.accessToken
 import com.example.githubclient.data.model.GithubResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -7,6 +8,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 private const val baseUrl = "https://api.github.com/"
 private val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -14,6 +16,7 @@ private val loggingInterceptor = HttpLoggingInterceptor().apply {
 }
 private val client = okhttp3.OkHttpClient.Builder()
     .addInterceptor(loggingInterceptor)
+    .addInterceptor(AuthInterceptor(accessToken))//のちにアプリの設定項目に変更予定
     .build()
 
 private val json = Json{
@@ -27,8 +30,10 @@ private val retrofit: Retrofit = Retrofit.Builder()
     .build()
 
 interface GithubApiService {
-    @GET("users/Yasuki-Sh/repos")
-    suspend fun getRepos(): List<GithubResponse>
+    @GET("users/{username}/repos")
+    suspend fun getRepos(@Path("username") username: String): List<GithubResponse>
+    @GET("user/repos")
+    suspend fun getPrivateRepos(): List<GithubResponse>
 }
 
 object GithubApi {

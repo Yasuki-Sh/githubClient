@@ -27,4 +27,17 @@ class GithubViewModel: ViewModel() {
                 }
         }
     }
+    fun fetchGithubPrivateRepos() {
+        viewModelScope.launch {
+            repository.getPrivateRepos()
+                .onSuccess { repos ->
+                    _uiState.value = GithubUiState.Success(repos)
+                    }
+                .onFailure { throwable ->
+                    _uiState.value = GithubUiState.Error
+                    Log.e("GithubViewModel", "Error", throwable)
+                }
+        }
+    }
+
 }

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        viewModel.fetchGithubRepos()
+        viewModel.fetchGithubPrivateRepos()
 
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
