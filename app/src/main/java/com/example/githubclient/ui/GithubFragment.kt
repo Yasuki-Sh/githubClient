@@ -38,15 +38,18 @@ class GithubFragment: Fragment() {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is GithubUiState.Loading -> {
-                        adapter.updateData(emptyList())
+                        binding.fetchState.text = "Loading..."
+                        binding.progressBar.visibility = View.VISIBLE
                     }
                     is GithubUiState.Success -> {
                         adapter.updateData(uiState.repos)
+                        binding.fetchState.text = "${uiState.repos.size}個のリポジトリを表示しています"
+                        binding.progressBar.visibility = View.GONE
                     }
                     is GithubUiState.Error -> {
-                        adapter.updateData(emptyList())
+                        binding.fetchState.text = "Error"
+                        binding.progressBar.visibility = View.GONE
                     }
-                    else -> {}
                 }
             }
         }

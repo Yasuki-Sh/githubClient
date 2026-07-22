@@ -23,7 +23,7 @@ class GithubViewModel: ViewModel() {
                 }
                 .onFailure { throwable ->
                     _uiState.value = GithubUiState.Error
-                    Log.e("GithubViewModel", "Error", throwable)
+                    Log.e("GithubViewModel", "Error: Failed to fetch public repos", throwable)
                 }
         }
     }
@@ -35,7 +35,7 @@ class GithubViewModel: ViewModel() {
                     }
                 .onFailure { throwable ->
                     _uiState.value = GithubUiState.Error
-                    Log.e("GithubViewModel", "Error", throwable)
+                    Log.e("GithubViewModel", "Error: Failed to fetch private repos", throwable)
                 }
         }
     }

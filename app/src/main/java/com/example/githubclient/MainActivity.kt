@@ -6,12 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.githubclient.databinding.ActivityMainBinding
 import com.example.githubclient.ui.GithubFragment
-import com.example.githubclient.ui.GithubUiState
 import com.example.githubclient.ui.GithubViewModel
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: GithubViewModel by viewModels()
@@ -30,24 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.fetchGithubPrivateRepos()
 
-        lifecycleScope.launch {
-            viewModel.uiState.collect { uiState ->
-                when (uiState) {
-                    is GithubUiState.Loading -> {
-                        binding.textView.text = "Loading..."
-                    }
-                    is GithubUiState.Success -> {
-                        binding.textView.text = "${uiState.repos.size}個のリポジトリを表示しています"
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.repositoryList, GithubFragment())
-                            .commit()
-                    }
-                    is GithubUiState.Error -> {
-                        binding.textView.text = "Repository Data Fetch Error"
-                    }
-                    else -> {}
-                }
-            }
-        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.repositoryList, GithubFragment())
+            .commit()
     }
 }
