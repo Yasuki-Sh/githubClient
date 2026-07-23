@@ -22,9 +22,6 @@ class GithubViewAdapter(
         fun bind(repo: GithubResponse) {
             binding.repositoryName.text = repo.fullName
             binding.repositoryUrl.text = repo.htmlUrl
-            binding.root.setOnClickListener {
-                onItemClick(repo)
-            }
         }
     }
 
@@ -37,6 +34,9 @@ class GithubViewAdapter(
 
     override fun onBindViewHolder(holder: GithubViewHolder, position: Int) {
         holder.bind(repositoryData[position])
+        holder.itemView.setOnClickListener {
+            onItemClick(repositoryData[position])
+        }
     }
 
     override fun getItemCount(): Int = repositoryData.size

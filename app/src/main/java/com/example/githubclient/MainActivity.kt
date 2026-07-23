@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.githubclient.databinding.ActivityMainBinding
-import com.example.githubclient.ui.GithubFragment
+import com.example.githubclient.ui.GithubReposFragment
 import com.example.githubclient.ui.GithubViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.fetchGithubPrivateRepos()
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.repositoryList, GithubFragment())
+            .replace(R.id.repositoryList, GithubReposFragment())
             .commit()
     }
 }

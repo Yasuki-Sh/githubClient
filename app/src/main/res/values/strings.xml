@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">githubClient</string>
+    <string name="descriptionText">説明文</string>
+    <string name="readme_md">README.md</string>
 </resources>

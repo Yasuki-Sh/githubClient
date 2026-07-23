@@ -9,10 +9,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubclient.R
 import com.example.githubclient.databinding.FragmentRepositoryBinding
 import kotlinx.coroutines.launch
 
-class GithubFragment: Fragment() {
+class GithubReposFragment: Fragment() {
     private val viewModel: GithubViewModel by activityViewModels()
 
     private var _binding: FragmentRepositoryBinding? = null
@@ -31,7 +32,13 @@ class GithubFragment: Fragment() {
             DividerItemDecoration(requireContext(), linearLayoutManager.orientation)
         )
 
-        val adapter = GithubViewAdapter(emptyList(), onItemClick = { /*todo*/ } )// 仮で空リストを設定している
+        val adapter = GithubViewAdapter(emptyList()){ repo ->
+            val detailFragment = GithubRepoDetailFragment.newInstance(repo.fullName, repo.description)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.repositoryList, detailFragment)
+                .addToBackStack(null)
+                .commit()
+        }
         binding.repositoryRecyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {

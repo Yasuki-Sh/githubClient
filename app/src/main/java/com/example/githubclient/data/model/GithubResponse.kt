@@ -7,5 +7,6 @@ import kotlinx.serialization.Serializable
 data class GithubResponse (
     @SerialName("full_name") val fullName: String,
     val private: Boolean,
-    @SerialName("html_url") val htmlUrl: String
+    @SerialName("html_url") val htmlUrl: String,
+    val description: String?
 )
