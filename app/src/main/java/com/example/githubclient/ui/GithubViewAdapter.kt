@@ -20,7 +20,7 @@ class GithubViewAdapter(
     inner class GithubViewHolder(private val binding: ItemRepositoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: GithubResponse) {
-            binding.repositoryName.text = repo.fullName
+            binding.repositoryName.text = repo.name
             binding.repositoryUrl.text = repo.htmlUrl
         }
     }

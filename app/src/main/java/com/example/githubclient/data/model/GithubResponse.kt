@@ -5,8 +5,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GithubResponse (
-    @SerialName("full_name") val fullName: String,
+    val name: String,
     val private: Boolean,
+    val owner: Owner,
     @SerialName("html_url") val htmlUrl: String,
     val description: String?
+)
+@Serializable
+data class Owner (
+    val login: String,
 )

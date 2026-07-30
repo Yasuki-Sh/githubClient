@@ -33,7 +33,7 @@ class GithubReposFragment: Fragment() {
         )
 
         val adapter = GithubViewAdapter(emptyList()){ repo ->
-            val detailFragment = GithubRepoDetailFragment.newInstance(repo.fullName, repo.description)
+            val detailFragment = GithubRepoDetailFragment.newInstance(repo.name, repo.owner.login, repo.description, repo.owner.login)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.repositoryList, detailFragment)
                 .addToBackStack(null)

@@ -13,6 +13,10 @@ class GithubViewModel: ViewModel() {
     private val _uiState = MutableStateFlow<GithubUiState>(GithubUiState.Loading)
     val uiState: StateFlow<GithubUiState> = _uiState
 
+    private val _readmeUiState = MutableStateFlow<GithubReadmeUiState>(GithubReadmeUiState.Loading)
+    val readmeUiState: StateFlow<GithubReadmeUiState> = _readmeUiState
+
+
     private val repository = GithubRepository()
 
     fun fetchGithubRepos() {
@@ -40,4 +44,17 @@ class GithubViewModel: ViewModel() {
         }
     }
 
+    fun fetchReadme(owner: String, repo: String){
+        _readmeUiState.value = GithubReadmeUiState.Loading
+        viewModelScope.launch {
+            repository.getReadme(owner, repo)
+                .onSuccess { readme ->
+                    _readmeUiState.value = GithubReadmeUiState.Success(readme)
+                }
+                .onFailure { throwable ->
+                    _readmeUiState.value = GithubReadmeUiState.Error
+                    Log.e("GithubViewModel", "Error: Readme.md not found", throwable)
+                }
+        }
+    }
 }

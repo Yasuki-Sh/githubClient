@@ -2,6 +2,7 @@ package com.example.githubclient.data.remote
 
 import com.example.githubclient.BuildConfig.accessToken
 import com.example.githubclient.data.model.GithubResponse
+import com.example.githubclient.data.model.ReadmeResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,6 +35,12 @@ interface GithubApiService {
     suspend fun getRepos(@Path("username") username: String): List<GithubResponse>
     @GET("user/repos")
     suspend fun getPrivateRepos(): List<GithubResponse>
+
+    @GET("repos/{owner}/{repo}/readme")
+    suspend fun getReadme(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): ReadmeResponse
 }
 
 object GithubApi {
