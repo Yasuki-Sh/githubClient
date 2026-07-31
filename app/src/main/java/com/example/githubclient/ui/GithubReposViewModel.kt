@@ -8,18 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class GithubViewModel: ViewModel() {
+class GithubReposViewModel: ViewModel() {
 
     private val _uiState = MutableStateFlow<GithubUiState>(GithubUiState.Loading)
     val uiState: StateFlow<GithubUiState> = _uiState
 
-    private val _readmeUiState = MutableStateFlow<GithubReadmeUiState>(GithubReadmeUiState.Loading)
-    val readmeUiState: StateFlow<GithubReadmeUiState> = _readmeUiState
-
-
     private val repository = GithubRepository()
 
-    fun fetchGithubRepos() {
+    fun fetchGithubRepos() { // accessTokenがない場合に、publicリポジトリを取得する
         viewModelScope.launch {
             repository.getRepos()
                 .onSuccess { repos ->
@@ -27,7 +23,7 @@ class GithubViewModel: ViewModel() {
                 }
                 .onFailure { throwable ->
                     _uiState.value = GithubUiState.Error
-                    Log.e("GithubViewModel", "Error: Failed to fetch public repos", throwable)
+                    Log.e("GithubReposViewModel", "Error: Failed to fetch public repos", throwable)
                 }
         }
     }
@@ -39,21 +35,7 @@ class GithubViewModel: ViewModel() {
                     }
                 .onFailure { throwable ->
                     _uiState.value = GithubUiState.Error
-                    Log.e("GithubViewModel", "Error: Failed to fetch private repos", throwable)
-                }
-        }
-    }
-
-    fun fetchReadme(owner: String, repo: String){
-        _readmeUiState.value = GithubReadmeUiState.Loading
-        viewModelScope.launch {
-            repository.getReadme(owner, repo)
-                .onSuccess { readme ->
-                    _readmeUiState.value = GithubReadmeUiState.Success(readme)
-                }
-                .onFailure { throwable ->
-                    _readmeUiState.value = GithubReadmeUiState.Error
-                    Log.e("GithubViewModel", "Error: Readme.md not found", throwable)
+                    Log.e("GithubReposViewModel", "Error: Failed to fetch private repos", throwable)
                 }
         }
     }

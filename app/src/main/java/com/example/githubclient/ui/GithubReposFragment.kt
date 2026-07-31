@@ -14,7 +14,7 @@ import com.example.githubclient.databinding.FragmentRepositoryBinding
 import kotlinx.coroutines.launch
 
 class GithubReposFragment: Fragment() {
-    private val viewModel: GithubViewModel by activityViewModels()
+    private val viewModel: GithubReposViewModel by activityViewModels()
 
     private var _binding: FragmentRepositoryBinding? = null
     private val binding get() = _binding!!
@@ -33,7 +33,7 @@ class GithubReposFragment: Fragment() {
         )
 
         val adapter = GithubViewAdapter(emptyList()){ repo ->
-            val detailFragment = GithubRepoDetailFragment.newInstance(repo.name, repo.owner.login, repo.description, repo.owner.login)
+            val detailFragment = GithubRepoDetailFragment.newInstance(repo.name, repo.owner.login, repo.description)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.repositoryList, detailFragment)
                 .addToBackStack(null)
