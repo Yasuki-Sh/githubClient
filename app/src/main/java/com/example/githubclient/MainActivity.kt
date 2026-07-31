@@ -8,10 +8,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.githubclient.databinding.ActivityMainBinding
 import com.example.githubclient.ui.GithubReposFragment
-import com.example.githubclient.ui.GithubViewModel
+import com.example.githubclient.ui.GithubReposViewModel
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: GithubViewModel by viewModels()
+    private val viewModel: GithubReposViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +25,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        viewModel.fetchGithubPrivateRepos()
+        if (savedInstanceState == null) {
+            viewModel.fetchGithubPrivateRepos()
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.repositoryList, GithubReposFragment())
-            .commit()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.repositoryList, GithubReposFragment())
+                .commit()
+        }
     }
 }
