@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.githubclient.databinding.RepositoryDetailsBinding
+import com.example.githubclient.databinding.FragmentRepositoryDetailsBinding
 import kotlinx.coroutines.launch
 
 class GithubRepoDetailFragment: Fragment() {
@@ -20,7 +20,7 @@ class GithubRepoDetailFragment: Fragment() {
     }
 
 
-    private var _binding: RepositoryDetailsBinding? = null
+    private var _binding: FragmentRepositoryDetailsBinding? = null
     private val binding get() = _binding!!
 
     companion object {
@@ -44,7 +44,7 @@ class GithubRepoDetailFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = RepositoryDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
