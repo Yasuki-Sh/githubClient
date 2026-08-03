@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubclient.R
 import com.example.githubclient.databinding.FragmentRepositoryBinding
+import com.example.githubclient.ui.setting.SettingFragment
 import kotlinx.coroutines.launch
 
 class GithubReposFragment: Fragment() {
@@ -40,6 +41,13 @@ class GithubReposFragment: Fragment() {
                 .commit()
         }
         binding.repositoryRecyclerView.adapter = adapter
+
+        binding.buttonSettings.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.repositoryList, SettingFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->

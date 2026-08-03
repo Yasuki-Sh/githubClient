@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.githubclient.databinding.ActivityMainBinding
 import com.example.githubclient.ui.GithubReposFragment
 import com.example.githubclient.ui.GithubReposViewModel
+import com.example.githubclient.ui.setting.SettingFragment
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: GithubReposViewModel by viewModels()
