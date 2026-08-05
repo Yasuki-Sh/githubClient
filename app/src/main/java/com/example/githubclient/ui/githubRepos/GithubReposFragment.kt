@@ -1,21 +1,26 @@
-package com.example.githubclient.ui
+package com.example.githubclient.ui.githubRepos
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubclient.R
 import com.example.githubclient.databinding.FragmentRepositoryBinding
+import com.example.githubclient.ui.githubRepoDetail.GithubRepoDetailFragment
 import com.example.githubclient.ui.setting.SettingFragment
 import kotlinx.coroutines.launch
 
 class GithubReposFragment: Fragment() {
-    private val viewModel: GithubReposViewModel by activityViewModels()
+    private val viewModel: GithubReposViewModel by viewModels {
+        GithubReposViewModelFactory(
+            requireContext()
+        )
+    }
 
     private var _binding: FragmentRepositoryBinding? = null
     private val binding get() = _binding!!
@@ -33,14 +38,19 @@ class GithubReposFragment: Fragment() {
             DividerItemDecoration(requireContext(), linearLayoutManager.orientation)
         )
 
-        val adapter = GithubViewAdapter(emptyList()){ repo ->
-            val detailFragment = GithubRepoDetailFragment.newInstance(repo.name, repo.owner.login, repo.description)
+        val adapter = GithubViewAdapter(emptyList()) { repo ->
+            val detailFragment =
+                GithubRepoDetailFragment.newInstance(repo.name, repo.owner.login, repo.description)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.repositoryList, detailFragment)
                 .addToBackStack(null)
                 .commit()
         }
         binding.repositoryRecyclerView.adapter = adapter
+
+        binding.buttonRefresh.setOnClickListener {
+            viewModel.getRepos()
+        }
 
         binding.buttonSettings.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -58,7 +68,7 @@ class GithubReposFragment: Fragment() {
                     }
                     is GithubUiState.Success -> {
                         adapter.updateData(uiState.repos)
-                        binding.fetchState.text = "${uiState.repos.size}個のリポジトリを表示しています"
+                        binding.fetchState.text = "リポジトリ数：${uiState.repos.size}"
                         binding.progressBar.visibility = View.GONE
                     }
                     is GithubUiState.Error -> {

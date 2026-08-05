@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class SettingFragment: Fragment() {
     private var _binding: FragmentSettingBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +40,9 @@ class SettingFragment: Fragment() {
                     Toast.makeText(context, "Saved Credentials: ${binding.inputOwner.text}", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+        binding.closeButton.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     return binding.root
     }

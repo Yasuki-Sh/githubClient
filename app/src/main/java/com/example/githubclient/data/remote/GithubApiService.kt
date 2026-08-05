@@ -31,8 +31,8 @@ private val retrofit: Retrofit = Retrofit.Builder()
     .build()
 
 interface GithubApiService {
-    @GET("users/{username}/repos")
-    suspend fun getRepos(@Path("username") username: String): List<GithubResponse>
+    @GET("users/{owner}/repos")
+    suspend fun getRepos(@Path("owner") owner: String): List<GithubResponse>
     @GET("user/repos")
     suspend fun getPrivateRepos(): List<GithubResponse>
 

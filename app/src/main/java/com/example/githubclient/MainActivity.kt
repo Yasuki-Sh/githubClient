@@ -7,9 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.githubclient.databinding.ActivityMainBinding
-import com.example.githubclient.ui.GithubReposFragment
-import com.example.githubclient.ui.GithubReposViewModel
-import com.example.githubclient.ui.setting.SettingFragment
+import com.example.githubclient.ui.githubRepos.GithubReposFragment
+import com.example.githubclient.ui.githubRepos.GithubReposViewModel
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: GithubReposViewModel by viewModels()
@@ -27,8 +26,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (savedInstanceState == null) {
-            viewModel.fetchGithubPrivateRepos()
-
             supportFragmentManager.beginTransaction()
                 .replace(R.id.repositoryList, GithubReposFragment())
                 .commit()

@@ -1,4 +1,4 @@
-package com.example.githubclient.ui
+package com.example.githubclient.ui.githubRepoDetail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class GithubRepoDetailFragment: Fragment() {
     private val viewModel: GithubRepoDetailViewModel by viewModels {
         GithubRepoDetailViewModelFactory(
+            requireContext(),
             arguments?.getString(ARG_OWNER) ?: "",
             arguments?.getString(ARG_NAME) ?: ""
         )
@@ -57,15 +58,15 @@ class GithubRepoDetailFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.readmeUiState.collect { uiState ->
                 when (uiState) {
-                    is GithubReadmeUiState.Success -> {
+                    is GithubRepoDetailUiState.Success -> {
                         binding.readme.text = uiState.readme
                     }
 
-                    is GithubReadmeUiState.Error -> {
+                    is GithubRepoDetailUiState.Error -> {
                         binding.readme.text = "Error: Readme.md not found"
                     }
 
-                    is GithubReadmeUiState.Loading -> {
+                    is GithubRepoDetailUiState.Loading -> {
                         binding.readme.text = "Loading..."
                     }
                 }

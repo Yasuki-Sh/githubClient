@@ -3,19 +3,24 @@ package com.example.githubclient.domain
 import com.example.githubclient.data.model.GithubResponse
 import com.example.githubclient.data.remote.GithubApi
 import android.util.Base64
-class GithubRepository {
+import com.example.githubclient.data.local.DataStore
+
+class GithubRepository(private val dataStore: DataStore) {
     suspend fun getRepos(): Result<List<GithubResponse>> {
-        return try {
-            Result.success(GithubApi.retrofitService.getRepos("Yasuki-Sh"))// アプリの設定にてユーザーを指定できるよう実装予定
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-    suspend fun getPrivateRepos(): Result<List<GithubResponse>> {
-        return try {
-            Result.success(GithubApi.retrofitService.getPrivateRepos())
-        } catch (e: Exception) {
-            Result.failure(e)
+        val owner = dataStore.getCredentials().owner
+        val token = dataStore.getCredentials().token
+        return if(token != "") { // tokenがあるとき、プライベートリポジトリを取得する
+            try {
+                Result.success(GithubApi.retrofitService.getPrivateRepos())
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        } else { // tokenがないとき、パブリックリポジトリを取得する
+            try {
+                Result.success(GithubApi.retrofitService.getRepos(owner))
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
         }
     }
     suspend fun getReadme(owner: String, repo: String): Result<String> {
