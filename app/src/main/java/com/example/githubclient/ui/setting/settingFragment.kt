@@ -42,6 +42,10 @@ class SettingFragment: Fragment() {
             }
         }
         binding.closeButton.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                "settings_updated",
+                Bundle.EMPTY
+            )
             parentFragmentManager.popBackStack()
         }
     return binding.root

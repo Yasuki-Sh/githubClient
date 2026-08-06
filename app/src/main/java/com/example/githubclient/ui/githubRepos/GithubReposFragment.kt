@@ -48,6 +48,14 @@ class GithubReposFragment: Fragment() {
         }
         binding.repositoryRecyclerView.adapter = adapter
 
+        // settingの閉じるボタンで戻った場合、リポジトリを再取得する
+        parentFragmentManager.setFragmentResultListener(
+            "settings_updated",
+            viewLifecycleOwner
+        ) { _, _ ->
+            viewModel.getRepos()
+        }
+
         binding.buttonRefresh.setOnClickListener {
             viewModel.getRepos()
         }
