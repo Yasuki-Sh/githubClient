@@ -3,12 +3,12 @@ package com.example.githubclient.domain
 import com.example.githubclient.data.model.GithubResponse
 import com.example.githubclient.data.remote.GithubApi
 import android.util.Base64
-import com.example.githubclient.data.local.DataStore
+import com.example.githubclient.data.local.GithubCredentialDataStore
 
-class GithubRepository(private val dataStore: DataStore) {
+class GithubRepository(private val githubCredentialDataStore: GithubCredentialDataStore) {
     suspend fun getRepos(): Result<List<GithubResponse>> {
-        val owner = dataStore.getCredentials().owner
-        val token = dataStore.getCredentials().token
+        val owner = githubCredentialDataStore.getCredentials().owner
+        val token = githubCredentialDataStore.getCredentials().token
         return if(token != "") { // tokenがあるとき、プライベートリポジトリを取得する
             try {
                 Result.success(GithubApi.retrofitService.getPrivateRepos())

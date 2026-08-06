@@ -2,16 +2,13 @@ package com.example.githubclient
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.githubclient.databinding.ActivityMainBinding
 import com.example.githubclient.ui.githubRepos.GithubReposFragment
-import com.example.githubclient.ui.githubRepos.GithubReposViewModel
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: GithubReposViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

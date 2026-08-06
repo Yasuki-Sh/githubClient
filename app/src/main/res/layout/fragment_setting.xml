@@ -42,23 +42,12 @@
         app:layout_constraintTop_toBottomOf="@+id/input_owner" />
 
     <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_token" />
-
-    <Button
         android:id="@+id/closeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Apply"
-        android:textColor="#000000"
-        android:backgroundTint="#CCCCCC"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+        app:layout_constraintTop_toBottomOf="@+id/input_token" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
