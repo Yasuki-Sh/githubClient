@@ -2,16 +2,13 @@ package com.example.githubclient
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.githubclient.databinding.ActivityMainBinding
-import com.example.githubclient.ui.GithubReposFragment
-import com.example.githubclient.ui.GithubReposViewModel
+import com.example.githubclient.ui.githubRepos.GithubReposFragment
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: GithubReposViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +23,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (savedInstanceState == null) {
-            viewModel.fetchGithubPrivateRepos()
-
             supportFragmentManager.beginTransaction()
                 .replace(R.id.repositoryList, GithubReposFragment())
                 .commit()

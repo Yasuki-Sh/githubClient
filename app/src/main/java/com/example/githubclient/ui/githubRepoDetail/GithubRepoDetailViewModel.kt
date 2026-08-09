@@ -1,4 +1,4 @@
-package com.example.githubclient.ui
+package com.example.githubclient.ui.githubRepoDetail
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -11,11 +11,12 @@ import kotlinx.coroutines.launch
 class GithubRepoDetailViewModel(
     private val owner: String,
     private val repo: String,
-    private val repository: GithubRepository = GithubRepository()
+    private val repository: GithubRepository
 ): ViewModel() {
 
-    private val _readmeUiState = MutableStateFlow<GithubReadmeUiState>(GithubReadmeUiState.Loading)
-    val readmeUiState: StateFlow<GithubReadmeUiState> = _readmeUiState
+    private val _readmeUiState =
+        MutableStateFlow<GithubRepoDetailUiState>(GithubRepoDetailUiState.Loading)
+    val readmeUiState: StateFlow<GithubRepoDetailUiState> = _readmeUiState
 
     init {
         fetchReadme()
@@ -25,10 +26,10 @@ class GithubRepoDetailViewModel(
         viewModelScope.launch {
             repository.getReadme(owner, repo)
                 .onSuccess { readme ->
-                    _readmeUiState.value = GithubReadmeUiState.Success(readme)
+                    _readmeUiState.value = GithubRepoDetailUiState.Success(readme)
                 }
                 .onFailure { throwable ->
-                    _readmeUiState.value = GithubReadmeUiState.Error
+                    _readmeUiState.value = GithubRepoDetailUiState.Error
                     Log.e("GithubRepoDetailViewModel", "Error: Readme.md not found", throwable)
                 }
         }

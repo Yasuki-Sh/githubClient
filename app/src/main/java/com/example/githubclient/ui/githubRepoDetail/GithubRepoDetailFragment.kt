@@ -1,4 +1,4 @@
-package com.example.githubclient.ui
+package com.example.githubclient.ui.githubRepoDetail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.githubclient.databinding.RepositoryDetailsBinding
+import com.example.githubclient.databinding.FragmentRepositoryDetailsBinding
 import kotlinx.coroutines.launch
 
 class GithubRepoDetailFragment: Fragment() {
     private val viewModel: GithubRepoDetailViewModel by viewModels {
         GithubRepoDetailViewModelFactory(
+            requireContext(),
             arguments?.getString(ARG_OWNER) ?: "",
             arguments?.getString(ARG_NAME) ?: ""
         )
     }
 
 
-    private var _binding: RepositoryDetailsBinding? = null
+    private var _binding: FragmentRepositoryDetailsBinding? = null
     private val binding get() = _binding!!
 
     companion object {
@@ -44,7 +45,7 @@ class GithubRepoDetailFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = RepositoryDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -57,15 +58,15 @@ class GithubRepoDetailFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.readmeUiState.collect { uiState ->
                 when (uiState) {
-                    is GithubReadmeUiState.Success -> {
+                    is GithubRepoDetailUiState.Success -> {
                         binding.readme.text = uiState.readme
                     }
 
-                    is GithubReadmeUiState.Error -> {
+                    is GithubRepoDetailUiState.Error -> {
                         binding.readme.text = "Error: Readme.md not found"
                     }
 
-                    is GithubReadmeUiState.Loading -> {
+                    is GithubRepoDetailUiState.Loading -> {
                         binding.readme.text = "Loading..."
                     }
                 }

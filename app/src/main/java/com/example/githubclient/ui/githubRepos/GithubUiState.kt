@@ -1,4 +1,4 @@
-package com.example.githubclient.ui
+package com.example.githubclient.ui.githubRepos
 
 import com.example.githubclient.data.model.GithubResponse
 
