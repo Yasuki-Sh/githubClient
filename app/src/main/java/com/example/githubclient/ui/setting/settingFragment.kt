@@ -31,18 +31,16 @@ class SettingFragment: Fragment() {
         binding.closeButton.setOnClickListener {
             lifecycleScope.launch {
                 val context = requireContext()
-                if(binding.inputOwner.text.toString().isNotEmpty()) {
-                    GithubCredentialDataStore.getInstance(context).saveCredentials(
-                        binding.inputOwner.text.toString(),
-                        binding.inputToken.text.toString()
-                    )
-                }
+                GithubCredentialDataStore.getInstance(context).saveCredentials(
+                    binding.inputOwner.text.toString(),
+                    binding.inputToken.text.toString()
+                )
+                parentFragmentManager.setFragmentResult(
+                    "settings_updated",
+                    Bundle.EMPTY
+                )
+                parentFragmentManager.popBackStack()
             }
-            parentFragmentManager.setFragmentResult(
-                "settings_updated",
-                Bundle.EMPTY
-            )
-            parentFragmentManager.popBackStack()
         }
     return binding.root
     }

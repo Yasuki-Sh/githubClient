@@ -14,9 +14,11 @@ GitHub APIを利用して、プライベートリポジトリの一覧取得お�
 - [ ] **エラーハンドリング強化**
 
 ## 技術スタック
+- **Language:** Kotlin
 - **UI:** Android View / ViewBinding
 - **Networking:** Retrofit2 / OkHttp3
 - **Serialization:** Kotlin Serialization
-- **Language:** Kotlin
+- **Local Storage:** DataStore
+- **Security:** Tink
 
 ## 動作確認手順
