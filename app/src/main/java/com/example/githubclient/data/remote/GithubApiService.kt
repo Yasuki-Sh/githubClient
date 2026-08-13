@@ -1,11 +1,12 @@
 package com.example.githubclient.data.remote
 
-import com.example.githubclient.BuildConfig.accessToken
+import com.example.githubclient.data.local.GithubCredentialDataStore
 import com.example.githubclient.data.model.GithubResponse
 import com.example.githubclient.data.model.ReadmeResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
@@ -15,20 +16,9 @@ private const val baseUrl = "https://api.github.com/"
 private val loggingInterceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
 }
-private val client = okhttp3.OkHttpClient.Builder()
-    .addInterceptor(loggingInterceptor)
-    .addInterceptor(AuthInterceptor(accessToken))//のちにアプリの設定項目に変更予定
-    .build()
-
 private val json = Json{
     ignoreUnknownKeys = true
 }
-
-private val retrofit: Retrofit = Retrofit.Builder()
-    .baseUrl(baseUrl)
-    .client(client)
-    .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-    .build()
 
 interface GithubApiService {
     @GET("users/{owner}/repos")
@@ -44,6 +34,21 @@ interface GithubApiService {
 }
 
 object GithubApi {
-    val retrofitService : GithubApiService by lazy {
-        retrofit.create(GithubApiService::class.java) }
+    private lateinit var retrofitService_: GithubApiService
+
+    fun initialize(dataStore: GithubCredentialDataStore) {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(AuthInterceptor(dataStore))
+            .build()
+
+        retrofitService_ = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+            .create(GithubApiService::class.java)
+    }
+
+    val retrofitService get() = retrofitService_
 }
