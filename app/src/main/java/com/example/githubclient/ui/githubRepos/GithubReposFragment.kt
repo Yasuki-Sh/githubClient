@@ -1,5 +1,6 @@
 package com.example.githubclient.ui.githubRepos
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ class GithubReposFragment: Fragment() {
     private var _binding: FragmentRepositoryBinding? = null
     private val binding get() = _binding!!
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,16 +73,18 @@ class GithubReposFragment: Fragment() {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
                     is GithubUiState.Loading -> {
+                        adapter.updateData(emptyList())
                         binding.fetchState.text = "Loading..."
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is GithubUiState.Success -> {
                         adapter.updateData(uiState.repos)
-                        binding.fetchState.text = "リポジトリ数：${uiState.repos.size}"
+                        binding.fetchState.text = "Repositories: ${uiState.repos.size}"
                         binding.progressBar.visibility = View.GONE
                     }
                     is GithubUiState.Error -> {
-                        binding.fetchState.text = "Error"
+                        adapter.updateData(emptyList())
+                        binding.fetchState.text = uiState.error.status + ": " + uiState.error.message
                         binding.progressBar.visibility = View.GONE
                     }
                 }

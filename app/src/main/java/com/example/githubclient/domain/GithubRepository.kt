@@ -3,26 +3,52 @@ package com.example.githubclient.domain
 import com.example.githubclient.data.model.GithubResponse
 import com.example.githubclient.data.remote.GithubApi
 import android.util.Base64
+import android.util.Log
 import com.example.githubclient.data.local.GithubCredentialDataStore
+import com.example.githubclient.data.model.GithubApiException
+import com.example.githubclient.data.model.GithubErrorResponse
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 
 class GithubRepository(private val githubCredentialDataStore: GithubCredentialDataStore) {
     suspend fun getRepos(): Result<List<GithubResponse>> {
         val owner = githubCredentialDataStore.getCredentials().owner
         val token = githubCredentialDataStore.getCredentials().token
-        return if(token != "") { // tokenがあるとき、プライベートリポジトリを取得する
-            try {
-                Result.success(GithubApi.retrofitService.getPrivateRepos())
-            } catch (e: Exception) {
-                Result.failure(e)
+
+        val response = try {
+            if (token != "") {
+                GithubApi.retrofitService.getPrivateRepos()
+            } else {
+                GithubApi.retrofitService.getRepos(owner)
             }
-        } else { // tokenがないとき、パブリックリポジトリを取得する
-            try {
-                Result.success(GithubApi.retrofitService.getRepos(owner))
-            } catch (e: Exception) {
-                Result.failure(e)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+        return if (response.isSuccessful) {
+            response.body()?.let { Result.success(it) }
+                ?: Result.failure(Exception("Response body is null"))
+        } else {
+            val errorJson = response.errorBody()?.string()
+            val apiError = errorJson?.let {
+                try {
+                    Json.decodeFromString<GithubErrorResponse>(it)
+                } catch (e: SerializationException) {
+                    null
+                }
             }
+            Log.e("GithubRepository", apiError?.documentationUrl ?: "documentation url not found")
+            Result.failure(
+                GithubApiException(
+                    apiError ?: GithubErrorResponse(
+                        response.code().toString(),
+                        response.message(),
+                        ""
+                    )
+                )
+            )
         }
     }
+
     suspend fun getReadme(owner: String, repo: String): Result<String> {
         return try {
             val response = GithubApi.retrofitService.getReadme(owner, repo)

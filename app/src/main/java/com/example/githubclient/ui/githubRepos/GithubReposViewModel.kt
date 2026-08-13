@@ -3,6 +3,8 @@ package com.example.githubclient.ui.githubRepos
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.githubclient.data.model.GithubApiException
+import com.example.githubclient.data.model.GithubErrorResponse
 import com.example.githubclient.domain.GithubRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +29,18 @@ class GithubReposViewModel(
                     _uiState.value = GithubUiState.Success(repos)
                 }
                 .onFailure { throwable ->
-                    _uiState.value = GithubUiState.Error
+                    val apiException = throwable as? GithubApiException
+                    _uiState.value = if (apiException != null) {
+                        GithubUiState.Error(apiException.errorResponse)
+                    } else {
+                        GithubUiState.Error(
+                            GithubErrorResponse(
+                                "Error",
+                                "Offline",
+                                ""
+                            )
+                        )
+                    }
                     Log.e("GithubReposViewModel", "Error: Failed to fetch repos", throwable)
                 }
         }

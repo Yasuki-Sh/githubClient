@@ -8,6 +8,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,9 +23,9 @@ private val json = Json{
 
 interface GithubApiService {
     @GET("users/{owner}/repos")
-    suspend fun getRepos(@Path("owner") owner: String): List<GithubResponse>
+    suspend fun getRepos(@Path("owner") owner: String): Response<List<GithubResponse>>
     @GET("user/repos")
-    suspend fun getPrivateRepos(): List<GithubResponse>
+    suspend fun getPrivateRepos(): Response<List<GithubResponse>>
 
     @GET("repos/{owner}/{repo}/readme")
     suspend fun getReadme(
