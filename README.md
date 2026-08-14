@@ -21,3 +21,8 @@ GitHub APIを利用して、プライベートリポジトリの一覧取得お�
 - **Serialization:** Kotlin Serialization
 - **Local Storage:** DataStore
 - **Security:** Tink
+- **MarkDown:** Markwon
+
+## 備考
+
+学習のため、DIを実装せず、Factoryを自作しています。
