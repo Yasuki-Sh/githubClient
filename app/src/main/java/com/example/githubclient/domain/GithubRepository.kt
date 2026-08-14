@@ -28,7 +28,7 @@ class GithubRepository(private val githubCredentialDataStore: GithubCredentialDa
         }
         return if (response.isSuccessful) {
             response.body()?.let { Result.success(it) }
-                ?: Result.failure(Exception("Response body is null"))
+                ?: Result.failure(Exception(GithubApiException(GithubErrorResponse("Error", "Response is null", ""))))
         } else {
             val errorJson = response.errorBody()?.string()
             val apiError = errorJson?.let {
@@ -41,9 +41,10 @@ class GithubRepository(private val githubCredentialDataStore: GithubCredentialDa
             Log.e("GithubRepository", apiError?.documentationUrl ?: "documentation url not found")
             Result.failure(
                 GithubApiException(
-                    apiError ?: GithubErrorResponse(
+                    apiError?.copy(status = apiError.status ?: response.code().toString())
+                        ?: GithubErrorResponse(
                         response.code().toString(),
-                        response.message(),
+                        "想定外のエラーが発生しました",
                         ""
                     )
                 )

@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class GithubErrorResponse (
-    val status: String,
+data class GithubErrorResponse (
+    val status: String? = null,
     val message: String,
     @SerialName("documentation_url") val documentationUrl: String
 )
