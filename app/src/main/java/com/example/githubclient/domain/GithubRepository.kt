@@ -18,8 +18,10 @@ class GithubRepository(private val githubCredentialDataStore: GithubCredentialDa
         val response = try {
             if (token != "") {
                 GithubApi.retrofitService.getPrivateRepos()
-            } else {
+            } else if(owner != ""){
                 GithubApi.retrofitService.getRepos(owner)
+            } else {
+                return Result.failure(GithubApiException(GithubErrorResponse("Notice", "Input credential", "")))
             }
         } catch (e: Exception) {
             return Result.failure(e)
