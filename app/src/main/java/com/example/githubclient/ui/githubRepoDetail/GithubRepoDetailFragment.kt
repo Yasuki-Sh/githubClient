@@ -9,6 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.githubclient.databinding.FragmentRepositoryDetailsBinding
+import io.noties.markwon.Markwon
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.ext.tables.TablePlugin
+import io.noties.markwon.html.HtmlPlugin
+import io.noties.markwon.image.ImagesPlugin
 import kotlinx.coroutines.launch
 
 class GithubRepoDetailFragment: Fragment() {
@@ -20,6 +25,14 @@ class GithubRepoDetailFragment: Fragment() {
         )
     }
 
+    private val markwon: Markwon by lazy {
+        Markwon.builder(requireContext())
+            .usePlugin(HtmlPlugin.create())
+            .usePlugin(ImagesPlugin.create())
+            .usePlugin(TablePlugin.create(requireContext()))
+            .usePlugin(StrikethroughPlugin.create())
+            .build()
+    }
 
     private var _binding: FragmentRepositoryDetailsBinding? = null
     private val binding get() = _binding!!
@@ -59,7 +72,7 @@ class GithubRepoDetailFragment: Fragment() {
             viewModel.readmeUiState.collect { uiState ->
                 when (uiState) {
                     is GithubRepoDetailUiState.Success -> {
-                        binding.readme.text = uiState.readme
+                        markwon.setMarkdown(binding.readme,uiState.readme)
                     }
 
                     is GithubRepoDetailUiState.Error -> {

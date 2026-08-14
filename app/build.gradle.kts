@@ -69,4 +69,12 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences:1.2.1")
     implementation("com.google.crypto.tink:tink-android:1.23.0")
+
+    // markdown対応
+    val markwonVersion = "4.6.2"
+    implementation("io.noties.markwon:core:${markwonVersion}")
+    implementation("io.noties.markwon:html:${markwonVersion}")
+    implementation("io.noties.markwon:image:${markwonVersion}")
+    implementation("io.noties.markwon:ext-tables:${markwonVersion}")
+    implementation("io.noties.markwon:ext-strikethrough:${markwonVersion}")
 }
