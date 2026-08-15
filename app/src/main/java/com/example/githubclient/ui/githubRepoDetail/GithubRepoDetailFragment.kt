@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.githubclient.databinding.FragmentRepositoryDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.ext.tables.TablePlugin
@@ -16,14 +17,9 @@ import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.ImagesPlugin
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class GithubRepoDetailFragment: Fragment() {
-    private val viewModel: GithubRepoDetailViewModel by viewModels {
-        GithubRepoDetailViewModelFactory(
-            requireContext(),
-            arguments?.getString(ARG_OWNER) ?: "",
-            arguments?.getString(ARG_NAME) ?: ""
-        )
-    }
+    private val viewModel: GithubRepoDetailViewModel by viewModels()
 
     private val markwon: Markwon by lazy {
         Markwon.builder(requireContext())

@@ -1,25 +1,30 @@
 package com.example.githubclient.domain
 
 import com.example.githubclient.data.model.GithubResponse
-import com.example.githubclient.data.remote.GithubApi
 import android.util.Base64
 import android.util.Log
 import com.example.githubclient.data.local.GithubCredentialDataStore
 import com.example.githubclient.data.model.GithubApiException
 import com.example.githubclient.data.model.GithubErrorResponse
+import com.example.githubclient.data.remote.GithubApiService
+import javax.inject.Inject
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
-class GithubRepository(private val githubCredentialDataStore: GithubCredentialDataStore) {
+
+class GithubRepository @Inject constructor (
+    private val githubCredentialDataStore: GithubCredentialDataStore,
+    private val apiService: GithubApiService
+) {
     suspend fun getRepos(): Result<List<GithubResponse>> {
         val owner = githubCredentialDataStore.getCredentials().owner
         val token = githubCredentialDataStore.getCredentials().token
 
         val response = try {
             if (token != "") {
-                GithubApi.retrofitService.getPrivateRepos()
+                apiService.getPrivateRepos()
             } else if(owner != ""){
-                GithubApi.retrofitService.getRepos(owner)
+                apiService.getRepos(owner)
             } else {
                 return Result.failure(GithubApiException(GithubErrorResponse("Notice", "Input credential", "")))
             }
@@ -54,7 +59,7 @@ class GithubRepository(private val githubCredentialDataStore: GithubCredentialDa
 
     suspend fun getReadme(owner: String, repo: String): Result<String> {
         return try {
-            val response = GithubApi.retrofitService.getReadme(owner, repo)
+            val response = apiService.getReadme(owner, repo)
             val decodedBytes = Base64.decode(response.content, Base64.DEFAULT)
             Result.success(String(decodedBytes, Charsets.UTF_8))
         } catch (e: Exception) {
