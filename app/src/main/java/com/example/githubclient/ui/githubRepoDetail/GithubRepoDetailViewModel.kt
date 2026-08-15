@@ -17,8 +17,8 @@ class GithubRepoDetailViewModel @Inject constructor(
     private val repository: GithubRepository
 ): ViewModel() {
 
-    private val owner: String = savedStateHandle["arg_owner"] ?: ""
-    private val repo: String = savedStateHandle["arg_name"] ?: ""
+    private val owner: String = savedStateHandle[GithubRepoDetailArgs.OWNER] ?: ""
+    private val repo: String = savedStateHandle[GithubRepoDetailArgs.REPO_NAME] ?: ""
     private val _readmeUiState =
         MutableStateFlow<GithubRepoDetailUiState>(GithubRepoDetailUiState.Loading)
     val readmeUiState: StateFlow<GithubRepoDetailUiState> = _readmeUiState
