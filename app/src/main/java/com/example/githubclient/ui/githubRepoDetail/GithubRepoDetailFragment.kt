@@ -34,17 +34,12 @@ class GithubRepoDetailFragment: Fragment() {
     private val binding get() = _binding!!
 
     companion object {
-        private const val ARG_REPO_NAME = "arg_repo_name"
-        private const val ARG_OWNER = "arg_owner"
-        private const val ARG_DESCRIPTION = "arg_description"
-
-
         fun newInstance(repoName: String, owner:String, description: String?): GithubRepoDetailFragment {
             val fragment = GithubRepoDetailFragment()
             fragment.arguments = Bundle().apply {
-                putString(ARG_REPO_NAME, repoName)
-                putString(ARG_OWNER, owner)
-                putString(ARG_DESCRIPTION, description)
+                putString(GithubRepoDetailArgs.REPO_NAME, repoName)
+                putString(GithubRepoDetailArgs.OWNER, owner)
+                putString(GithubRepoDetailArgs.DESCRIPTION, description)
             }
             return fragment
         }
@@ -61,8 +56,8 @@ class GithubRepoDetailFragment: Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.repoName.text = (arguments?.getString(ARG_REPO_NAME) + "の詳細")
-        binding.repoDescription.text = arguments?.getString(ARG_DESCRIPTION) ?: "説明文なし"
+        binding.repoName.text = (arguments?.getString(GithubRepoDetailArgs.REPO_NAME) + "の詳細")
+        binding.repoDescription.text = arguments?.getString(GithubRepoDetailArgs.DESCRIPTION) ?: "説明文なし"
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.readmeUiState.collect { uiState ->
