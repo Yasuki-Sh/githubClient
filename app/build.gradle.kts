@@ -3,6 +3,8 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     kotlin("plugin.serialization")
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -77,4 +79,10 @@ dependencies {
     implementation("io.noties.markwon:image:${markwonVersion}")
     implementation("io.noties.markwon:ext-tables:${markwonVersion}")
     implementation("io.noties.markwon:ext-strikethrough:${markwonVersion}")
+
+    // dagger hilt
+    val hiltVersion = "2.60.1"
+    implementation("com.google.dagger:hilt-android:${hiltVersion}")
+    ksp("com.google.dagger:hilt-android-compiler:${hiltVersion}")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.4.0")
 }

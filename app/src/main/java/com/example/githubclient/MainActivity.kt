@@ -5,18 +5,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.githubclient.data.local.GithubCredentialDataStore
-import com.example.githubclient.data.remote.GithubApi
 import com.example.githubclient.databinding.ActivityMainBinding
 import com.example.githubclient.ui.githubRepos.GithubReposFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-        val dataStore = GithubCredentialDataStore.getInstance(this)
-        GithubApi.initialize(dataStore)
         enableEdgeToEdge()
         setContentView(binding.root)
 

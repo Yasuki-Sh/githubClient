@@ -1,16 +1,18 @@
 package com.example.githubclient.ui.githubRepos
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubclient.data.model.GithubApiException
 import com.example.githubclient.data.model.GithubErrorResponse
 import com.example.githubclient.domain.GithubRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class GithubReposViewModel(
+@HiltViewModel
+class GithubReposViewModel @Inject constructor(
     private val repository: GithubRepository
 ): ViewModel() {
 
@@ -41,7 +43,6 @@ class GithubReposViewModel(
                             )
                         )
                     }
-                    Log.e("GithubReposViewModel", "Error: Failed to fetch repos", throwable)
                 }
         }
     }

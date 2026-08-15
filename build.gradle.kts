@@ -3,4 +3,6 @@ plugins {
     alias(libs.plugins.android.application) apply false
     kotlin("jvm") version "2.3.20"
     kotlin("plugin.serialization") version "2.3.20"
+    id("com.google.devtools.ksp") version "2.3.11" apply false
+    id("com.google.dagger.hilt.android") version "2.60.1" apply false
 }
