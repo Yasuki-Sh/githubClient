@@ -14,14 +14,12 @@ import com.example.githubclient.R
 import com.example.githubclient.databinding.FragmentRepositoryBinding
 import com.example.githubclient.ui.githubRepoDetail.GithubRepoDetailFragment
 import com.example.githubclient.ui.setting.SettingFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class GithubReposFragment: Fragment() {
-    private val viewModel: GithubReposViewModel by viewModels {
-        GithubReposViewModelFactory(
-            requireContext()
-        )
-    }
+    private val viewModel: GithubReposViewModel by viewModels ()
 
     private var _binding: FragmentRepositoryBinding? = null
     private val binding get() = _binding!!

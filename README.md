@@ -12,6 +12,7 @@ GitHub APIを利用して、プライベートリポジトリの一覧取得お�
 - [x] **API連携の実装**
 - [x] **ユーザー入力対応**（アプリ内でユーザー名やトークンを入力・保持）
 - [x] **エラーハンドリング強化**
+- [x] **MarkDown対応**
 
 ## 技術スタック
 - **Language:** Kotlin
@@ -20,5 +21,5 @@ GitHub APIを利用して、プライベートリポジトリの一覧取得お�
 - **Serialization:** Kotlin Serialization
 - **Local Storage:** DataStore
 - **Security:** Tink
-
-## 動作確認手順
+- **MarkDown:** Markwon
+- **DI:** Dagger Hilt

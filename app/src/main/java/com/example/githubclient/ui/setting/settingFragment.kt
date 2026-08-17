@@ -1,18 +1,21 @@
 package com.example.githubclient.ui.setting
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.githubclient.data.local.GithubCredentialDataStore
 import com.example.githubclient.databinding.FragmentSettingBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.getValue
 
+@AndroidEntryPoint
 class SettingFragment: Fragment() {
-    private var _binding: FragmentSettingBinding? = null
+    private val viewModel: SettingViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,20 +24,19 @@ class SettingFragment: Fragment() {
     ): View {
         val binding = FragmentSettingBinding.inflate(inflater, container, false)
 
-        lifecycleScope.launch {
-            val context = requireContext()
-            val credentials = GithubCredentialDataStore.getInstance(context).getCredentials()
-            binding.inputOwner.setText(credentials.owner)
-            binding.inputToken.setText(credentials.token)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.credentials.collect { credentials ->
+                binding.inputOwner.setText(credentials.owner)
+                binding.inputToken.setText(credentials.token)
+            }
         }
 
         binding.closeButton.setOnClickListener {
+            val owner = binding.inputOwner.text.toString()
+            val token = binding.inputToken.text.toString()
+            Log.d("SettingFragment", "owner=[$owner], token=[$token]")
             lifecycleScope.launch {
-                val context = requireContext()
-                GithubCredentialDataStore.getInstance(context).saveCredentials(
-                    binding.inputOwner.text.toString(),
-                    binding.inputToken.text.toString()
-                )
+                viewModel.saveCredentials(owner, token)
                 parentFragmentManager.setFragmentResult(
                     "settings_updated",
                     Bundle.EMPTY
